@@ -70,7 +70,7 @@ const CATEGORY_NAV_TABS: CategoryNavTab[] = [
   },
   {
     id: 'ropa_superior',
-    label: 'Ropa superior',
+    label: 'Superior',
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.5a2 2 0 0 0 1.97 1.67H7v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-9h2.17a2 2 0 0 0 1.97-1.67l.58-3.5a2 2 0 0 0-1.34-2.23z" />
@@ -79,7 +79,7 @@ const CATEGORY_NAV_TABS: CategoryNavTab[] = [
   },
   {
     id: 'ropa_inferior',
-    label: 'Ropa inferior',
+    label: 'Inferior',
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M5 4h14v7l-2 9h-3l-2-7-2 7H7l-2-9V4z" />
@@ -137,6 +137,19 @@ const EYE_OPTIONS: { id: EyeStyle; label: string }[] = [
   { id: 'sleepy',  label: 'Relajados' },
 ];
 
+export const CIRCLE_BG_PALETTE = [
+  { name: 'Cian Toonix', hex: '#A0E7E5' },
+  { name: 'Amarillo Sol', hex: '#FDE047' },
+  { name: 'Rosa Pastel', hex: '#F472B6' },
+  { name: 'Lila Suave', hex: '#C084FC' },
+  { name: 'Azul Cielo', hex: '#93C5FD' },
+  { name: 'Verde Menta', hex: '#86EFAC' },
+  { name: 'Melocotón', hex: '#FED7AA' },
+  { name: 'Blanco Nieve', hex: '#FFFFFF' },
+  { name: 'Gris Claro', hex: '#E2E8F0' },
+  { name: 'Noche Oscura', hex: '#252137' },
+];
+
 interface AvatarStudioEditorPageProps {
   onNavigateToAdmin?: () => void;
 }
@@ -149,6 +162,9 @@ export const AvatarStudioEditorPage: React.FC<AvatarStudioEditorPageProps> = () 
   // Color de piel en Base
   const [skinColor, setSkinColor] = useState<string>('#FFFFFF');
   const [bodyPattern, setBodyPattern] = useState<BodyPatternType>('none');
+
+  // Color de fondo del círculo detrás del muñeco Toonix
+  const [circleBgColor, setCircleBgColor] = useState<string>('#A0E7E5');
 
   // Expresiones faciales
   const [eyesStyle, setEyesStyle] = useState<EyeStyle>('classic');
@@ -370,10 +386,13 @@ export const AvatarStudioEditorPage: React.FC<AvatarStudioEditorPageProps> = () 
               COLUMNA IZQUIERDA: TARJETA DEL AVATAR CON CÍRCULO CIAN (#A0E7E5)
               ===================================================================== */}
           <div className="lg:col-span-5 h-full flex flex-col justify-between bg-white border-2 border-[#252137] rounded-3xl p-5 shadow-sm">
-            {/* Lienzo del Avatar con fondo circular cian suave #A0E7E5 */}
-            <div className="flex-1 min-h-[260px] flex flex-col items-center justify-center relative overflow-hidden">
-              {/* Círculo Cian suave de fondo */}
-              <div className="w-[240px] h-[240px] rounded-full bg-[#A0E7E5] absolute flex items-center justify-center" />
+            {/* Lienzo del Avatar con fondo circular suave personalizable */}
+            <div className="flex-1 min-h-[280px] flex flex-col items-center justify-center relative overflow-hidden">
+              {/* Círculo de fondo más grande y centrado para que quepan cabellos y gorros sin salirse */}
+              <div
+                className="w-[285px] h-[285px] rounded-full absolute flex items-center justify-center transition-colors duration-300 border-2 border-[#252137]/10 shadow-inner pointer-events-none"
+                style={{ backgroundColor: circleBgColor }}
+              />
 
               {/* Contenedor del Avatar escalado */}
               <div
@@ -404,12 +423,36 @@ export const AvatarStudioEditorPage: React.FC<AvatarStudioEditorPageProps> = () 
                     <img
                       key={item.id}
                       src={item.spriteUrl}
-                      alt={item.name}
+                      alt=""
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
                       style={{ zIndex: item.zIndex }}
                       className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
                     />
                   ))}
               </div>
+            </div>
+
+            {/* Selector de color para personalizar el fondo circular del avatar */}
+            <div className="flex items-center justify-center gap-1.5 py-2 px-1 shrink-0">
+              {CIRCLE_BG_PALETTE.map((color) => {
+                const isSelected = circleBgColor.toLowerCase() === color.hex.toLowerCase();
+                return (
+                  <button
+                    key={color.hex}
+                    type="button"
+                    title={color.name}
+                    onClick={() => setCircleBgColor(color.hex)}
+                    className={`w-5 h-5 rounded-md transition-all cursor-pointer ${
+                      isSelected
+                        ? 'border-2 border-[#252137] scale-110 shadow-xs ring-2 ring-purple-300'
+                        : 'border border-stone-300 hover:border-stone-500 hover:scale-105'
+                    }`}
+                    style={{ backgroundColor: color.hex }}
+                  />
+                );
+              })}
             </div>
 
             {/* Barra de Controles del Visor (Aleatorio, Zoom, Reset) */}

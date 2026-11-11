@@ -16,7 +16,20 @@ export const adminCatalogApi = {
   async getCategories(): Promise<Category[]> {
     try {
       const res = await fetch(`${API_BASE}/categories`);
-      if (res.ok) return await res.json();
+      if (res.ok) {
+        const data: Category[] = await res.json();
+        if (data && data.length > 0) {
+          return data.map((c) => ({
+            ...c,
+            name:
+              c.code === 'ropa_superior'
+                ? 'Superior'
+                : c.code === 'ropa_inferior'
+                ? 'Inferior'
+                : c.name,
+          }));
+        }
+      }
     } catch {
       // Fallback local
     }
@@ -46,7 +59,12 @@ export const adminCatalogApi = {
       if (params?.page !== undefined) queryParams.set('page', params.page.toString());
 
       const res = await fetch(`${API_BASE}/assets?${queryParams.toString()}`);
-      if (res.ok) return await res.json();
+      if (res.ok) {
+        const data = await res.json();
+        if (data && Array.isArray(data.content) && data.content.length >= 40) {
+          return data;
+        }
+      }
     } catch {
       // Fallback local
     }

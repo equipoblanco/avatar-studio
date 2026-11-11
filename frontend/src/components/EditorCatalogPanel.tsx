@@ -238,7 +238,10 @@ export const EditorCatalogPanel: React.FC<EditorCatalogPanelProps> = ({
                 <div className="w-full flex-1 flex items-center justify-center p-1">
                   <img
                     src={asset.thumbnailUrl || asset.spriteUrl}
-                    alt={asset.name}
+                    alt=""
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
                     className="max-h-16 max-w-16 object-contain filter drop-shadow-2xs select-none"
                     draggable={false}
                   />

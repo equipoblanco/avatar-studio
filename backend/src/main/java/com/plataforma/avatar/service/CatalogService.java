@@ -66,7 +66,7 @@ public class CatalogService {
         for (Asset asset : rawAssets) {
             boolean isDefault = Boolean.TRUE.equals(asset.getIsDefault());
             boolean isUnlockedInInventory = unlockedAssetIds.contains(asset.getId());
-            boolean isEquipable = isDefault || isUnlockedInInventory;
+            boolean isEquipable = isDefault || isUnlockedInInventory || userId == null || Boolean.TRUE.equals(asset.getObtainable());
 
             String acquisitionType;
             if (isDefault) {
@@ -74,11 +74,11 @@ public class CatalogService {
             } else if (isUnlockedInInventory) {
                 acquisitionType = "UNLOCKED";
             } else {
-                acquisitionType = "LOCKED";
+                acquisitionType = "OBTAINABLE";
             }
 
-            // CA-HU06.1: Si se solicitan solo disponibles, omitir los que no están en inventario ni son default
-            if (requireAvailableOnly && !isEquipable) {
+            // CA-HU06.1: Si se solicitan solo disponibles, omitir únicamente si se especifica usuario y no es equipable
+            if (requireAvailableOnly && !isEquipable && userId != null) {
                 continue;
             }
 

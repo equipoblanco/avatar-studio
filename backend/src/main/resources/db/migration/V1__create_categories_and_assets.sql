@@ -46,13 +46,13 @@ FOREIGN KEY (default_asset_id) REFERENCES cosmetic_assets(id) ON DELETE RESTRICT
 -- Semillas Iniciales: Las 7 Categorías del Avatar Toonix
 -- ==============================================================================
 INSERT INTO categories (id, code, name, z_index_default, is_required) VALUES
-(1, 'cuerpo_base',   'Cuerpo / Base',     10, TRUE),
-(2, 'calzado',       'Calzado',           20, FALSE),
-(3, 'ropa_inferior', 'Ropa Inferior',     25, FALSE),
+(1, 'cuerpo_base',   'Cuerpo',            10, TRUE),
+(2, 'calzado',       'Zapatos',           20, FALSE),
+(3, 'ropa_inferior', 'Inferior',          25, FALSE),
 (4, 'rostro',        'Rostro',            40, TRUE),
-(5, 'ropa_superior', 'Ropa Superior',     35, FALSE),
+(5, 'ropa_superior', 'Superior',          35, FALSE),
 (6, 'accesorios',    'Accesorios',        70, FALSE),
-(7, 'peinado',       'Peinado / Cabeza',  50, FALSE)
+(7, 'peinado',       'Cabello',           50, FALSE)
 ON DUPLICATE KEY UPDATE name=VALUES(name);
 
 -- ==============================================================================
