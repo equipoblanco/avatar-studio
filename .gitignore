@@ -37,3 +37,9 @@ hs_err_pid*
 
 # NUEVO: Archivos subidos en local (Sprites y Thumbnails)
 backend/uploads/
+
+# Archivos temporales de chat y volcados de código
+/*.txt
+
+# Configuración local de Vercel
+.vercel
