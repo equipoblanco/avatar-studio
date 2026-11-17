@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { AdminCatalogPage } from './pages/AdminCatalogPage';
 import { AvatarStudioEditorPage } from './pages/AvatarStudioEditorPage';
+import { BattlePassPage } from './pages/BattlePassPage';
 
 export const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<'admin' | 'editor'>('editor');
+  const [currentView, setCurrentView] = useState<'admin' | 'editor' | 'battlepass'>('editor');
 
   return (
     <div className="h-screen max-h-screen overflow-hidden bg-[#FAF9FD] text-[#252137] flex flex-col select-none">
@@ -36,6 +37,16 @@ export const App: React.FC = () => {
             Mi avatar
           </button>
           <button
+            onClick={() => setCurrentView('battlepass')}
+            className={`px-5 py-1.5 rounded-full text-xs font-bold transition-all ${
+              currentView === 'battlepass'
+                ? 'bg-[#252137] text-white shadow-xs'
+                : 'text-stone-600 hover:text-stone-900 font-semibold'
+            }`}
+          >
+            Pase de batalla
+          </button>
+          <button
             onClick={() => setCurrentView('admin')}
             className={`px-5 py-1.5 rounded-full text-xs font-bold transition-all ${
               currentView === 'admin'
@@ -52,6 +63,8 @@ export const App: React.FC = () => {
       <main className="flex-1 min-h-0 overflow-hidden bg-[#FAF9FD]">
         {currentView === 'editor' ? (
           <AvatarStudioEditorPage onNavigateToAdmin={() => setCurrentView('admin')} />
+        ) : currentView === 'battlepass' ? (
+          <BattlePassPage />
         ) : (
           <AdminCatalogPage onNavigateToEditor={() => setCurrentView('editor')} />
         )}
