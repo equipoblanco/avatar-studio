@@ -160,8 +160,10 @@ class EquipmentValidationServiceTest {
                 .slots(slots)
                 .build();
 
-        when(assetRepository.findById(1L)).thenReturn(Optional.of(assetCuerpoBase));
-        when(assetRepository.findById(10L)).thenReturn(Optional.of(assetSombreroMago));
+        // El orden de iteración del manifiesto no está garantizado, así que estos
+        // stubs se marcan lenient: la validación puede lanzar antes de consultarlos.
+        lenient().when(assetRepository.findById(1L)).thenReturn(Optional.of(assetCuerpoBase));
+        lenient().when(assetRepository.findById(10L)).thenReturn(Optional.of(assetSombreroMago));
 
         UnprocessableEntityException ex = assertThrows(
                 UnprocessableEntityException.class,

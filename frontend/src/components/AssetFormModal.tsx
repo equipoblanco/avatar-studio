@@ -151,9 +151,6 @@ export const AssetFormModal: React.FC<AssetFormModalProps> = ({
         {/* Columna Izquierda: Previsualizador Toonix en Vivo */}
         <div className="md:w-5/12 bg-stone-100 p-6 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-stone-200">
           <ToonixPreviewer
-            spritePreviewUrl={previewUrl}
-            zIndex={zIndex}
-            categoryCode={selectedCategory?.code}
             width={280}
             height={280}
           />

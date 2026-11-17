@@ -116,8 +116,9 @@ public class EquipmentValidationService {
             }
 
             // 5. Validación de Inventario / Pertenencia (CA-HU09.3 / CA-08)
+            // Los activos por defecto son gratuitos: no requieren consultar el inventario.
             boolean isDefault = Boolean.TRUE.equals(asset.getIsDefault());
-            boolean isOwned = userInventoryRepository.existsByUserIdAndAssetId(userId, assetId);
+            boolean isOwned = isDefault || userInventoryRepository.existsByUserIdAndAssetId(userId, assetId);
 
             if (!isDefault && !isOwned) {
                 throw new UnprocessableEntityException(
