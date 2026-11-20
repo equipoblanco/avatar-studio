@@ -66,7 +66,10 @@ export const App: React.FC = () => {
         ) : currentView === 'battlepass' ? (
           <BattlePassPage />
         ) : (
-          <AdminCatalogPage onNavigateToEditor={() => setCurrentView('editor')} />
+          <AdminCatalogPage
+            onNavigateToEditor={() => setCurrentView('editor')}
+            onNavigateToBattlePass={() => setCurrentView('battlepass')}
+          />
         )}
       </main>
     </div>

@@ -3,13 +3,15 @@ import { Asset, AssetFormData, Category } from '../types/catalog';
 import { IncompatibilityRule, IncompatibilityRuleFormData } from '../types/incompatibility';
 import { adminCatalogApi } from '../services/adminCatalogApi';
 import { adminIncompatibilityApi } from '../services/adminIncompatibilityApi';
+import { AdminBattlePassManager } from '../components/AdminBattlePassManager';
 
 interface AdminCatalogPageProps {
   onNavigateToEditor?: () => void;
+  onNavigateToBattlePass?: () => void;
 }
 
-export const AdminCatalogPage: React.FC<AdminCatalogPageProps> = ({ onNavigateToEditor }) => {
-  const [activeTab, setActiveTab] = useState<'catalog' | 'rules'>('catalog');
+export const AdminCatalogPage: React.FC<AdminCatalogPageProps> = ({ onNavigateToEditor, onNavigateToBattlePass }) => {
+  const [activeTab, setActiveTab] = useState<'catalog' | 'rules' | 'battlepass'>('catalog');
   const [categories, setCategories] = useState<Category[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [rules, setRules] = useState<IncompatibilityRule[]>([]);
@@ -283,6 +285,17 @@ export const AdminCatalogPage: React.FC<AdminCatalogPageProps> = ({ onNavigateTo
               >
                 <span>⚙️</span>
                 <span>Categorías y reglas</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('battlepass')}
+                className={`w-full text-left p-3 rounded-2xl text-xs font-bold transition-all flex items-center gap-2.5 ${activeTab === 'battlepass'
+                  ? 'bg-[#EEE7FF] text-[#7446E8] shadow-2xs'
+                  : 'text-stone-600 hover:text-stone-900 hover:bg-stone-50'
+                  }`}
+              >
+                <span>🏆</span>
+                <span>Pase de batalla</span>
               </button>
 
               {onNavigateToEditor && (
@@ -653,6 +666,11 @@ export const AdminCatalogPage: React.FC<AdminCatalogPageProps> = ({ onNavigateTo
                 </div>
               </div>
             </div>
+          )}
+
+          {/* VISTA 3: PASE DE BATALLA */}
+          {activeTab === 'battlepass' && (
+            <AdminBattlePassManager onPreview={onNavigateToBattlePass} />
           )}
         </div>
 

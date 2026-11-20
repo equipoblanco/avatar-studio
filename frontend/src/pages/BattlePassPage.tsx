@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { BattlePassPage as PageModel, BattlePassReward, RewardRarity } from '../types/battlePass';
-import { SEASON, STARTING_POINTS, getDaysRemaining } from '../services/battlePassMock';
+import { battlePassStore, STARTING_POINTS, getDaysRemaining } from '../services/battlePassMock';
 
 /**
  * ==========================================================================================
@@ -134,7 +134,9 @@ const RewardCard: React.FC<{
 // PÁGINA DEL PASE DE BATALLA
 // ---------------------------------------------------------------------------------------------
 export const BattlePassPage: React.FC = () => {
-  const pages = useMemo(() => SEASON.pages, []);
+  // La temporada se lee del store compartido (la admin puede editarla)
+  const season = battlePassStore.getSeason();
+  const pages = season.pages;
   const daysLeft = useMemo(() => getDaysRemaining(), []);
 
   // Estado mock del jugador
@@ -199,8 +201,8 @@ export const BattlePassPage: React.FC = () => {
               </svg>
             </div>
             <div>
-              <h1 className="font-black text-lg leading-tight">{SEASON.name}</h1>
-              <p className="text-xs text-stone-500">{SEASON.subtitle}</p>
+              <h1 className="font-black text-lg leading-tight">{season.name}</h1>
+              <p className="text-xs text-stone-500">{season.subtitle}</p>
             </div>
           </div>
 
